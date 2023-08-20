@@ -1,6 +1,7 @@
 import uuid
 from django.db import models
 from base.models import BaseLLMineModel
+from core.utils.llm_service import LLM_CHOICES
 
 from core.utils.prompting import EXTRACTER_PROMPT_RETURN_TYPES
 from datasources.models import Datasource
@@ -8,6 +9,7 @@ from datasources.models import Datasource
 
 class ContentPool(BaseLLMineModel):
     pool_name = models.CharField(max_length=255, unique=True)
+    llm_name = models.CharField(max_length=255, choices=LLM_CHOICES)
 
     def __str__(self) -> str:
         return self.pool_name
