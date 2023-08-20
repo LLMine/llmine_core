@@ -3,8 +3,7 @@ from django.db import models
 from base.models import BaseLLMineModel
 
 from core.utils.prompting import EXTRACTER_PROMPT_RETURN_TYPES
-
-from datasources.datasource_types import DATASOURCE_TYPE_MAP
+from datasources.models import Datasource
 
 
 class ContentPool(BaseLLMineModel):
@@ -16,9 +15,7 @@ class InjestedTextContent(BaseLLMineModel):
     content_pool = models.ForeignKey(ContentPool, on_delete=models.CASCADE)
     text_content = models.TextField()
     metadata_json = models.JSONField(null=True, blank=True)
-    datasource_type_name = models.CharField(
-        max_length=255, choices=tuple((item, item) for item in DATASOURCE_TYPE_MAP.keys())
-    )
+    datasource = models.ForeignKey(Datasource, on_delete=models.CASCADE)
     processed_at = models.DateTimeField(null=True, blank=True)
 
 
