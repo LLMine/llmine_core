@@ -11,3 +11,6 @@ class Datasource(BaseLLMineModel):
         max_length=255,
         choices=tuple((item, item) for item in DATASOURCE_TYPE_MAP.keys()),
     )
+
+    def __str__(self) -> str:
+        return self.datasource_name

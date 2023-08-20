@@ -9,6 +9,9 @@ from datasources.models import Datasource
 class ContentPool(BaseLLMineModel):
     pool_name = models.CharField(max_length=255, unique=True)
 
+    def __str__(self) -> str:
+        return self.pool_name
+
 
 class InjestedTextContent(BaseLLMineModel):
     content_uuid = models.UUIDField(default=uuid.uuid4, unique=True)
@@ -17,6 +20,9 @@ class InjestedTextContent(BaseLLMineModel):
     metadata_json = models.JSONField(null=True, blank=True)
     datasource = models.ForeignKey(Datasource, on_delete=models.CASCADE)
     processed_at = models.DateTimeField(null=True, blank=True)
+
+    def __str__(self) -> str:
+        return self.text_content
 
 
 class ExtracterPrompt(BaseLLMineModel):
@@ -34,3 +40,6 @@ class ExtracterPrompt(BaseLLMineModel):
     )
 
     content_pool = models.ForeignKey(ContentPool, on_delete=models.CASCADE)
+
+    def __str__(self) -> str:
+        return self.prompt_name

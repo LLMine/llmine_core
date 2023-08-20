@@ -11,7 +11,7 @@ class IngestableData:
         self.metadata_json = metadata_json if metadata_json is not None else {}
 
     def __str__(self):
-        return f"Content UUID: {self.content_uuid}, Content Type: {self.content_type}, Text Content: {self.text_content}, Metadata JSON: {self.metadata_json}"
+        return f"Content Pool: {self.content_pool}, Text Content: {self.text_content}, Metadata JSON: {self.metadata_json}"
 
 
 class BaseDataSourceType(ABC):
