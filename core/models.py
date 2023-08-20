@@ -51,3 +51,14 @@ class ExtracterPrompt(BaseLLMineModel):
 
     def __str__(self) -> str:
         return self.prompt_name
+    
+class ProcessedData(BaseLLMineModel):
+    content_pool = models.ForeignKey(ContentPool, on_delete=models.CASCADE)
+    injested_text_content = models.ForeignKey(InjestedTextContent, on_delete=models.CASCADE)
+    chain = models.ForeignKey(ExtracterChain, on_delete=models.CASCADE)
+    prompt = models.ForeignKey(ExtracterPrompt, on_delete=models.CASCADE)
+    prompt_result = models.TextField()
+    
+
+    def __str__(self) -> str:
+        return f"{self.content_pool.pool_name} - {self.ingested_text_content_id}"
