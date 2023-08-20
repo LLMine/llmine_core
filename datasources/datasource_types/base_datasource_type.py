@@ -16,5 +16,5 @@ class IngestableData:
 
 class BaseDataSourceType(ABC):
     @abstractmethod
-    def transform(data_sent_from_source: Dict) -> IngestableData:
+    def transform(self, data_sent_from_source: Dict) -> IngestableData:
         pass
