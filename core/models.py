@@ -26,6 +26,12 @@ class InjestedTextContent(BaseLLMineModel):
     def __str__(self) -> str:
         return self.text_content
 
+class ExtracterChain(BaseLLMineModel):
+    chain_name = models.CharField(max_length=100, unique=True)
+    content_pool = models.ForeignKey(ContentPool, on_delete=models.CASCADE)
+
+    def __str__(self) -> str:
+        return self.chain_name
 
 class ExtracterPrompt(BaseLLMineModel):
     prompt_name = models.CharField(max_length=100, unique=True)
@@ -41,7 +47,7 @@ class ExtracterPrompt(BaseLLMineModel):
         null=True, blank=True, help_text="Only used when return type is label"
     )
 
-    content_pool = models.ForeignKey(ContentPool, on_delete=models.CASCADE)
+    extracter_chain = models.ForeignKey(ExtracterChain, on_delete=models.CASCADE)
 
     def __str__(self) -> str:
         return self.prompt_name

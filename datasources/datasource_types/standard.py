@@ -6,7 +6,7 @@ from .base_datasource_type import BaseDataSourceType, IngestableData
 class StandardDataSourceType(BaseDataSourceType):
     def transform(self, data_sent_from_source: Dict) -> IngestableData:
         ingestable_data = IngestableData(
-            content_pool=data_sent_from_source["content_type"],
+            content_pool=data_sent_from_source["content_pool"],
             text_content=data_sent_from_source["text_content"],
         )
 
