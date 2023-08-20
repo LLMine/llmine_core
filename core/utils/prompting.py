@@ -2,7 +2,7 @@
 import json
 from typing import List
 
-EXTRACTER_PROMPT_RETURN_TYPES = ("text", "label", "json")
+EXTRACTER_PROMPT_RETURN_TYPES = (("text", "text"), ("label", "label"), ("json", "json"))
 
 
 def label_return_prompt(llm_name, labels: List[str]):

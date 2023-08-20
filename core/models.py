@@ -1,6 +1,7 @@
+import uuid
 from django.db import models
 from base.models import BaseLLMineModel
-import uuid
+
 from core.utils.prompting import EXTRACTER_PROMPT_RETURN_TYPES
 
 from datasources.datasource_types import DATASOURCE_TYPE_MAP
@@ -16,7 +17,7 @@ class InjestedTextContent(BaseLLMineModel):
     text_content = models.TextField()
     metadata_json = models.JSONField(null=True, blank=True)
     datasource_type_name = models.CharField(
-        max_length=255, choices=DATASOURCE_TYPE_MAP.keys()
+        max_length=255, choices=tuple((item, item) for item in DATASOURCE_TYPE_MAP.keys())
     )
     processed_at = models.DateTimeField(null=True, blank=True)
 

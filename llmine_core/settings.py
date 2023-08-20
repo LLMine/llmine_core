@@ -22,9 +22,9 @@ def get_secret(setting):
     """Get the secret variable or return explicit exception."""
     try:
         return os.environ[setting]
-    except KeyError:
+    except KeyError as exc:
         error_msg = f"Set the {setting} environment variable"
-        raise ImproperlyConfigured(error_msg)
+        raise ImproperlyConfigured(error_msg) from exc
 
 
 # Quick-start development settings - unsuitable for production
@@ -34,10 +34,16 @@ def get_secret(setting):
 SECRET_KEY = get_secret("SECRET_KEY")
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
-
-ALLOWED_HOSTS = []
-
+DEBUG = bool(get_secret("DEBUG"))
+if DEBUG:
+    ALLOWED_HOSTS = ["*"]
+    try:
+        codespaces_origin = get_secret("CODESPACES_ORIGIN")
+        CSRF_TRUSTED_ORIGINS = [codespaces_origin, "https://localhost:8000"]
+    except:
+        pass
+else:
+    ALLOWED_HOSTS = []
 # Application definition
 
 INSTALLED_APPS = [
