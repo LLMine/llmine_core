@@ -28,7 +28,7 @@ class InjestedTextContent(BaseLLMineModel):
 
 class ExtracterChain(BaseLLMineModel):
     chain_name = models.CharField(max_length=100, unique=True)
-    content_pool = models.ForeignKey(ContentPool, on_delete=models.CASCADE)
+    content_pool = models.ForeignKey(ContentPool, on_delete=models.CASCADE, related_name="extracter_chains")
 
     def __str__(self) -> str:
         return self.chain_name

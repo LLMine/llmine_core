@@ -18,13 +18,14 @@ from django.core.exceptions import ImproperlyConfigured
 BASE_DIR = Path(__file__).resolve().parent.parent
 
 
-def get_secret(setting):
+def get_secret(setting, required = True):
     """Get the secret variable or return explicit exception."""
     try:
         return os.environ[setting]
     except KeyError as exc:
-        error_msg = f"Set the {setting} environment variable"
-        raise ImproperlyConfigured(error_msg) from exc
+        if required:
+            error_msg = f"Set the {setting} environment variable"
+            raise ImproperlyConfigured(error_msg) from exc
 
 
 # Quick-start development settings - unsuitable for production
@@ -144,3 +145,8 @@ STATIC_URL = "static/"
 # https://docs.djangoproject.com/en/4.1/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
+
+# Celery Configs
+CELERY_BROKER_URL = get_secret("REDIS_URL")
+CELERY_RESULT_BACKEND = get_secret("REDIS_URL")
+OPENAI_API_KEY = get_secret("OPENAI_API_KEY", False)

@@ -5,7 +5,7 @@ from typing import Dict
 class IngestableData:
     def __init__(self, content_pool=None, text_content="", metadata_json=None):
         self.content_pool = (
-            content_pool  # This should be an instance of TextContentType or similar
+            content_pool  # This should be an instance of ContentPool or similar
         )
         self.text_content = text_content
         self.metadata_json = metadata_json if metadata_json is not None else {}
