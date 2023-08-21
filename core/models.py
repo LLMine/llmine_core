@@ -22,16 +22,21 @@ class InjestedTextContent(BaseLLMineModel):
     metadata_json = models.JSONField(null=True, blank=True)
     datasource = models.ForeignKey(Datasource, on_delete=models.CASCADE)
     processed_at = models.DateTimeField(null=True, blank=True)
+    process_completed_successfully = models.BooleanField(null=True, blank=True)
 
     def __str__(self) -> str:
         return self.text_content
 
+
 class ExtracterChain(BaseLLMineModel):
     chain_name = models.CharField(max_length=100, unique=True)
-    content_pool = models.ForeignKey(ContentPool, on_delete=models.CASCADE, related_name="extracter_chains")
+    content_pool = models.ForeignKey(
+        ContentPool, on_delete=models.CASCADE, related_name="extracter_chains"
+    )
 
     def __str__(self) -> str:
         return self.chain_name
+
 
 class ExtracterPrompt(BaseLLMineModel):
     prompt_name = models.CharField(max_length=100, unique=True)
@@ -51,14 +56,16 @@ class ExtracterPrompt(BaseLLMineModel):
 
     def __str__(self) -> str:
         return self.prompt_name
-    
+
+
 class ProcessedData(BaseLLMineModel):
     content_pool = models.ForeignKey(ContentPool, on_delete=models.CASCADE)
-    injested_text_content = models.ForeignKey(InjestedTextContent, on_delete=models.CASCADE)
+    injested_text_content = models.ForeignKey(
+        InjestedTextContent, on_delete=models.CASCADE
+    )
     chain = models.ForeignKey(ExtracterChain, on_delete=models.CASCADE)
     prompt = models.ForeignKey(ExtracterPrompt, on_delete=models.CASCADE)
     prompt_result = models.TextField()
-    
 
     def __str__(self) -> str:
-        return f"{self.content_pool.pool_name} - {self.ingested_text_content_id}"
+        return f"{self.content_pool.pool_name} - {self.injested_text_content_id}"

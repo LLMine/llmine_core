@@ -18,7 +18,7 @@ from django.core.exceptions import ImproperlyConfigured
 BASE_DIR = Path(__file__).resolve().parent.parent
 
 
-def get_secret(setting, required = True):
+def get_secret(setting, required=True):
     """Get the secret variable or return explicit exception."""
     try:
         return os.environ[setting]
@@ -55,6 +55,7 @@ INSTALLED_APPS = [
     "django.contrib.messages",
     "django.contrib.staticfiles",
     "base",
+    "openai_app",
     "datasources",
     "core",
 ]
@@ -150,3 +151,5 @@ DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 CELERY_BROKER_URL = get_secret("REDIS_URL")
 CELERY_RESULT_BACKEND = get_secret("REDIS_URL")
 OPENAI_API_KEY = get_secret("OPENAI_API_KEY", False)
+
+LLM_CONFIG = {}

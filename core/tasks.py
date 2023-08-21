@@ -1,29 +1,47 @@
 from celery import shared_task
-from .models import InjestedTextContent, ExtracterPrompt
+from .models import ExtracterChain, InjestedTextContent, ExtracterPrompt, ProcessedData
 from .utils.llm_service import get_llm_service
-from .utils.prompting import get_user_content
+from django.utils import timezone
 
 
-def get_prompt_output():
-    pass
-
-def run_extracter_chain(extracter_chain, content_pool, injested_text_content, llm_name):
+def run_extracter_chain(
+    extracter_chain,
+    content_pool,
+    injested_text_content: InjestedTextContent,
+    content_uuid,
+    llm_name,
+):
     extracter_prompts = ExtracterPrompt.objects.filter(extracter_chain=extracter_chain)
 
     if not extracter_prompts.exists():
-        print(f"Prompts not configured for text_content with UUID: {content_uuid} -- Content Pool: {content_pool} -- Extracter Chain: {extracter_chain}")
+        print(
+            f"Prompts not configured for text_content with UUID: {content_uuid} -- Content Pool: {content_pool} -- Extracter Chain: {extracter_chain}"
+        )
         return
-    
-    try:
-        llm_service = get_llm_service(llm_name)
 
-        messages = [llm_service.get_system_prompt()]
-        
-        for extracter_prompt in extracter_prompts:
-            messages.add(get_user_content(llm_name, extracter_prompt))
-            llm_response = llm_service.fetch_response(messages)
-            messages.add(get_assistant_prompt(llm_name, extracter_prompt))
-            # Construct a processvalue obj and save it to db.
+    llm_service = get_llm_service(llm_name)
+    llm_service.init_chain()
+
+    for extracter_prompt in extracter_prompts:
+        step_response = llm_service.process_prompt(
+            injested_text_content.text_content,
+            extracter_prompt.prompt_text,
+            extracter_prompt.return_type,
+            extracter_prompt.jsonschema,
+            extracter_prompt.labels_config_json,
+        )
+
+        # TODO: Validate step_response based on return type
+
+        ProcessedData.objects.create(
+            content_pool=content_pool,
+            injested_text_content=injested_text_content,
+            chain=extracter_chain,
+            prompt=extracter_prompt,
+            prompt_result=step_response,
+        )
+
+    return True
 
 
 @shared_task(
@@ -34,27 +52,25 @@ def run_extracter_chain(extracter_chain, content_pool, injested_text_content, ll
     task_time_limit=600,
 )
 def process_ingested_content(self, content_uuid):
-
     # Fetch the prompts configured for the given content_uuid
     ingested_text_content = InjestedTextContent.objects.get(content_uuid=content_uuid)
+
+    if ingested_text_content.process_completed_successfully:
+        return
+
     content_pool = ingested_text_content.content_pool
     llm_name = content_pool.llm_name
     extracter_chains = ExtracterChain.objects.filter(content_pool=content_pool)
-    
+
+    success = True
     for extracter_chain in extracter_chains:
-        run_extracter_chain(extracter_chain, content_pool, ingested_text_content, llm_name)
+        chain_success = run_extracter_chain(
+            extracter_chain, content_pool, ingested_text_content, content_uuid, llm_name
+        )
 
+        success = success and chain_success
 
-    
+    ingested_text_content.processed_at = timezone.now()
+    ingested_text_content.process_completed_successfully = success
 
-
-
-
-
-    
-
-
-    
-
-
-
+    ingested_text_content.save()
