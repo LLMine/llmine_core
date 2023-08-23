@@ -2,6 +2,7 @@ from celery import shared_task
 from .models import ExtracterChain, InjestedTextContent, ExtracterPrompt, ProcessedData
 from .utils.llm_service import get_llm_service
 from django.utils import timezone
+from django.template import Context, Template
 
 
 def run_extracter_chain(
@@ -11,7 +12,9 @@ def run_extracter_chain(
     content_uuid,
     llm_name,
 ):
-    extracter_prompts = ExtracterPrompt.objects.filter(extracter_chain=extracter_chain)
+    extracter_prompts = ExtracterPrompt.objects.filter(
+        extracter_chain=extracter_chain
+    ).order_by("order_index")
 
     if not extracter_prompts.exists():
         print(
@@ -22,7 +25,25 @@ def run_extracter_chain(
     llm_service = get_llm_service(llm_name)
     llm_service.init_chain()
 
+    prompt_response_map = {}
+
     for extracter_prompt in extracter_prompts:
+        if extracter_prompt.run_if_expr:
+            template_str = (
+                "{% if "
+                + extracter_prompt.run_if_expr
+                + " %} True {% else %} False {% endif %}"
+            )
+            template = Template(template_str)
+            context = Context(prompt_response_map)
+            bool_str = template.render(context).strip()
+
+            if bool_str == "False":
+                prompt_response_map[
+                    extracter_prompt.prompt_name
+                ] = "x_llmine_skipped_execution"
+                continue
+
         step_response = llm_service.process_prompt(
             injested_text_content.text_content,
             extracter_prompt.prompt_text,
@@ -30,6 +51,8 @@ def run_extracter_chain(
             extracter_prompt.jsonschema,
             extracter_prompt.labels_config_json,
         )
+
+        prompt_response_map[extracter_prompt.prompt_name] = step_response
 
         # TODO: Validate step_response based on return type
 

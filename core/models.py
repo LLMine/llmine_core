@@ -53,9 +53,16 @@ class ExtracterPrompt(BaseLLMineModel):
     )
 
     extracter_chain = models.ForeignKey(ExtracterChain, on_delete=models.CASCADE)
+    run_if_expr = models.TextField(
+        null=True, blank=True, help_text="Blank means always run"
+    )
+    order_index = models.IntegerField(default=0)
 
     def __str__(self) -> str:
         return self.prompt_name
+
+    class Meta:
+        unique_together = ("extracter_chain", "order_index")
 
 
 class ProcessedData(BaseLLMineModel):
