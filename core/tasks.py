@@ -4,6 +4,20 @@ from .utils.llm_service import get_llm_service
 from django.utils import timezone
 from django.template import Context, Template
 
+import jinja2
+
+
+def should_run_prompt(run_if_expr, prompt_response_map):
+    if run_if_expr is None:
+        return True
+
+    environment = jinja2.Environment()
+    template_str = "{% if " + run_if_expr + " %} True {% else %} False {% endif %}"
+    template = environment.from_string(template_str)
+    bool_str = template.render(prompt_response_map).strip()
+
+    return bool_str == "True"
+
 
 def run_extracter_chain(
     extracter_chain,
@@ -28,21 +42,11 @@ def run_extracter_chain(
     prompt_response_map = {}
 
     for extracter_prompt in extracter_prompts:
-        if extracter_prompt.run_if_expr:
-            template_str = (
-                "{% if "
-                + extracter_prompt.run_if_expr
-                + " %} True {% else %} False {% endif %}"
-            )
-            template = Template(template_str)
-            context = Context(prompt_response_map)
-            bool_str = template.render(context).strip()
-
-            if bool_str == "False":
-                prompt_response_map[
-                    extracter_prompt.prompt_name
-                ] = "x_llmine_skipped_execution"
-                continue
+        if not should_run_prompt(extracter_prompt.run_if_expr):
+            prompt_response_map[
+                extracter_prompt.prompt_name
+            ] = "x_llmine_skipped_execution"
+            continue
 
         step_response = llm_service.process_prompt(
             injested_text_content.text_content,
