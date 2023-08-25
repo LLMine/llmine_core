@@ -9,7 +9,6 @@ from datasources.models import Datasource
 
 class ContentPool(BaseLLMineModel):
     pool_name = models.CharField(max_length=255, unique=True)
-    llm_name = models.CharField(max_length=255, choices=LLM_CHOICES)
 
     def __str__(self) -> str:
         return self.pool_name
@@ -32,6 +31,9 @@ class ExtracterChain(BaseLLMineModel):
     chain_name = models.CharField(max_length=100, unique=True)
     content_pool = models.ForeignKey(
         ContentPool, on_delete=models.CASCADE, related_name="extracter_chains"
+    )
+    llm_name = models.CharField(
+        max_length=255, choices=LLM_CHOICES, default="gpt-3.5-turbo"
     )
 
     def __str__(self) -> str:

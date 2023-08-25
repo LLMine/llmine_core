@@ -24,7 +24,6 @@ def run_extracter_chain(
     content_pool,
     injested_text_content: InjestedTextContent,
     content_uuid,
-    llm_name,
 ):
     extracter_prompts = ExtracterPrompt.objects.filter(
         extracter_chain=extracter_chain
@@ -36,7 +35,7 @@ def run_extracter_chain(
         )
         return
 
-    llm_service = get_llm_service(llm_name)
+    llm_service = get_llm_service(extracter_chain.llm_name)
     llm_service.init_chain()
 
     prompt_response_map = {}
@@ -86,13 +85,12 @@ def process_ingested_content(self, content_uuid):
         return
 
     content_pool = ingested_text_content.content_pool
-    llm_name = content_pool.llm_name
     extracter_chains = ExtracterChain.objects.filter(content_pool=content_pool)
 
     success = True
     for extracter_chain in extracter_chains:
         chain_success = run_extracter_chain(
-            extracter_chain, content_pool, ingested_text_content, content_uuid, llm_name
+            extracter_chain, content_pool, ingested_text_content, content_uuid
         )
 
         success = success and chain_success
