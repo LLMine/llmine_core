@@ -67,6 +67,7 @@ $ source env/bin/activate
 ```
 
 Now create a .env file in the repository containing the following env vars.
+
 ```
 DB_HOST=<YOUR DB HOSR>
 DB_USER=<YOUR DB USER>
@@ -80,6 +81,7 @@ REDIS_URL=<YOUR REDIS URL>
 ```
 
 Now you need to export these vars on your command line, run migrations, create a superuser and login via admin panel.
+
 ```
 (env)$ source export_env_vars.sh
 (env)$ python manage.py migrate
@@ -88,6 +90,7 @@ Now you need to export these vars on your command line, run migrations, create a
 ```
 
 You will need to run the celery too in a different terminal to actually run the extracter chain processing tasks.
+
 ```
 (env)$ source export_env_vars.sh
 (env)$ celery -A llmine_core worker -l info --concurrency=2
@@ -96,3 +99,9 @@ You will need to run the celery too in a different terminal to actually run the 
 ## Contribution Guide
 
 Work in Progress
+
+## Special Thanks
+
+Speical thanks to Vulmiqi (vulmiqi.com) for sharing cloud resources and OpenAI credits with the authors of this project, for testing and debugging purposes.
+
+![Vulmiqi Logo](https://vulmiqi.com/img/logo1.png)
