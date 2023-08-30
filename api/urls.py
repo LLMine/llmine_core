@@ -24,14 +24,14 @@ urlpatterns = [
         name="content-pool-detail",
     ),
     path(
-        "injested-text-content/",
+        "ingested-text-content/",
         views.InjestedTextContentListView.as_view(),
-        name="injested-text-content-list",
+        name="ingested-text-content-list",
     ),
     path(
-        "injested-text-content/<int:pk>/",
+        "ingested-text-content/<int:pk>/",
         views.InjestedTextContentDetailView.as_view(),
-        name="injested-text-content-detail",
+        name="ingested-text-content-detail",
     ),
     path(
         "extracter-chain/",
