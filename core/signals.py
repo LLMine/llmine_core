@@ -15,5 +15,7 @@ def schedule_content_processing_task(
     sender, instance: InjestedTextContent, created, **kwargs
 ):
     if created or settings.DEBUG:
+        # In Development/Debug Mode, we can just save the same content again from admin panel
+        # to rerun the chains
         print(f"Scheduling processing task for ${instance.content_uuid}")
         process_ingested_content.delay(instance.content_uuid)
