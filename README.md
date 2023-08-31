@@ -42,7 +42,9 @@ Our application is best suited to run with Instruction-Tuned LLMs like GPT-3.5 o
 * [X] Out-of-the-box support for OpenAI models
 * [X] Choices Return, JSON Return and Text Return types configurable
 * [X] Conditionally run prompts based on the output of previous prompts in a chain
-* [ ] Webhooks and REST API Layer
+* [X] Webhooks and REST API Layer
+* [ ] Add responses from previous step in chain as input var in next step's prompt via template string
+* [ ] Support for custom Python code as step in chain
 * [ ] User-Friendly UI to configure workflows
 * [ ] Basic Dashboard to view and export extracted insights
 * [ ] LLama2 Support
