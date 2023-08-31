@@ -1,0 +1,1476 @@
+openapi: 3.0.3
+info:
+  title: LLMine REST API
+  version: 1.0.0
+  description: REST API for working with LLMine objects
+paths:
+  /api/v1/content-pool/:
+    get:
+      operationId: content_pool_list
+      parameters:
+      - name: page
+        required: false
+        in: query
+        description: A page number within the paginated result set.
+        schema:
+          type: integer
+      - in: query
+        name: pool_name
+        schema:
+          type: string
+      - in: query
+        name: pool_name__icontains
+        schema:
+          type: string
+      tags:
+      - content-pool
+      security:
+      - knoxTokenAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaginatedContentPoolList'
+          description: ''
+    post:
+      operationId: content_pool_create
+      tags:
+      - content-pool
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ContentPool'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/ContentPool'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/ContentPool'
+        required: true
+      security:
+      - knoxTokenAuth: []
+      responses:
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ContentPool'
+          description: ''
+  /api/v1/content-pool/{id}/:
+    get:
+      operationId: content_pool_retrieve
+      description: Concrete view for retrieving, updating or deleting a model instance.
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        required: true
+      tags:
+      - content-pool
+      security:
+      - knoxTokenAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ContentPool'
+          description: ''
+    put:
+      operationId: content_pool_update
+      description: Concrete view for retrieving, updating or deleting a model instance.
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        required: true
+      tags:
+      - content-pool
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ContentPool'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/ContentPool'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/ContentPool'
+        required: true
+      security:
+      - knoxTokenAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ContentPool'
+          description: ''
+    patch:
+      operationId: content_pool_partial_update
+      description: Concrete view for retrieving, updating or deleting a model instance.
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        required: true
+      tags:
+      - content-pool
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PatchedContentPool'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/PatchedContentPool'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/PatchedContentPool'
+      security:
+      - knoxTokenAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ContentPool'
+          description: ''
+    delete:
+      operationId: content_pool_destroy
+      description: Concrete view for retrieving, updating or deleting a model instance.
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        required: true
+      tags:
+      - content-pool
+      security:
+      - knoxTokenAuth: []
+      responses:
+        '204':
+          description: No response body
+  /api/v1/datasource/:
+    get:
+      operationId: datasource_list
+      parameters:
+      - in: query
+        name: datasource_name
+        schema:
+          type: string
+      - in: query
+        name: datasource_type_name
+        schema:
+          type: string
+          enum:
+          - standard
+        description: '* `standard` - standard'
+      - name: page
+        required: false
+        in: query
+        description: A page number within the paginated result set.
+        schema:
+          type: integer
+      tags:
+      - datasource
+      security:
+      - knoxTokenAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaginatedDatasourceSerialzerList'
+          description: ''
+    post:
+      operationId: datasource_create
+      tags:
+      - datasource
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/DatasourceSerialzer'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/DatasourceSerialzer'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/DatasourceSerialzer'
+        required: true
+      security:
+      - knoxTokenAuth: []
+      responses:
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DatasourceSerialzer'
+          description: ''
+  /api/v1/datasource/{id}/:
+    get:
+      operationId: datasource_retrieve
+      description: Concrete view for retrieving, updating or deleting a model instance.
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        required: true
+      tags:
+      - datasource
+      security:
+      - knoxTokenAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DatasourceSerialzer'
+          description: ''
+    put:
+      operationId: datasource_update
+      description: Concrete view for retrieving, updating or deleting a model instance.
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        required: true
+      tags:
+      - datasource
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/DatasourceSerialzer'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/DatasourceSerialzer'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/DatasourceSerialzer'
+        required: true
+      security:
+      - knoxTokenAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DatasourceSerialzer'
+          description: ''
+    patch:
+      operationId: datasource_partial_update
+      description: Concrete view for retrieving, updating or deleting a model instance.
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        required: true
+      tags:
+      - datasource
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PatchedDatasourceSerialzer'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/PatchedDatasourceSerialzer'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/PatchedDatasourceSerialzer'
+      security:
+      - knoxTokenAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DatasourceSerialzer'
+          description: ''
+    delete:
+      operationId: datasource_destroy
+      description: Concrete view for retrieving, updating or deleting a model instance.
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        required: true
+      tags:
+      - datasource
+      security:
+      - knoxTokenAuth: []
+      responses:
+        '204':
+          description: No response body
+  /api/v1/extracter-chain/:
+    get:
+      operationId: extracter_chain_list
+      parameters:
+      - in: query
+        name: chain_name
+        schema:
+          type: string
+      - in: query
+        name: chain_name__icontains
+        schema:
+          type: string
+      - in: query
+        name: content_pool__pool_name
+        schema:
+          type: string
+      - in: query
+        name: content_pool__pool_name__icontains
+        schema:
+          type: string
+      - in: query
+        name: llm_name
+        schema:
+          type: string
+          enum:
+          - gpt-3.5-turbo
+          - gpt-3.5-turbo-16k
+          - gpt-4
+        description: |-
+          * `gpt-3.5-turbo` - gpt-3.5-turbo
+          * `gpt-3.5-turbo-16k` - gpt-3.5-turbo-16k
+          * `gpt-4` - gpt-4
+      - name: page
+        required: false
+        in: query
+        description: A page number within the paginated result set.
+        schema:
+          type: integer
+      tags:
+      - extracter-chain
+      security:
+      - knoxTokenAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaginatedExtracterChainList'
+          description: ''
+    post:
+      operationId: extracter_chain_create
+      tags:
+      - extracter-chain
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ExtracterChain'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/ExtracterChain'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/ExtracterChain'
+        required: true
+      security:
+      - knoxTokenAuth: []
+      responses:
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ExtracterChain'
+          description: ''
+  /api/v1/extracter-chain/{id}/:
+    get:
+      operationId: extracter_chain_retrieve
+      description: Concrete view for retrieving, updating or deleting a model instance.
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        required: true
+      tags:
+      - extracter-chain
+      security:
+      - knoxTokenAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ExtracterChain'
+          description: ''
+    put:
+      operationId: extracter_chain_update
+      description: Concrete view for retrieving, updating or deleting a model instance.
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        required: true
+      tags:
+      - extracter-chain
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ExtracterChain'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/ExtracterChain'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/ExtracterChain'
+        required: true
+      security:
+      - knoxTokenAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ExtracterChain'
+          description: ''
+    patch:
+      operationId: extracter_chain_partial_update
+      description: Concrete view for retrieving, updating or deleting a model instance.
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        required: true
+      tags:
+      - extracter-chain
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PatchedExtracterChain'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/PatchedExtracterChain'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/PatchedExtracterChain'
+      security:
+      - knoxTokenAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ExtracterChain'
+          description: ''
+    delete:
+      operationId: extracter_chain_destroy
+      description: Concrete view for retrieving, updating or deleting a model instance.
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        required: true
+      tags:
+      - extracter-chain
+      security:
+      - knoxTokenAuth: []
+      responses:
+        '204':
+          description: No response body
+  /api/v1/extracter-prompt/:
+    get:
+      operationId: extracter_prompt_list
+      parameters:
+      - in: query
+        name: extracter_chain__chain_name
+        schema:
+          type: string
+      - in: query
+        name: extracter_chain__chain_name__icontains
+        schema:
+          type: string
+      - in: query
+        name: order_index
+        schema:
+          type: integer
+      - in: query
+        name: order_index__gte
+        schema:
+          type: integer
+      - in: query
+        name: order_index__lte
+        schema:
+          type: integer
+      - name: page
+        required: false
+        in: query
+        description: A page number within the paginated result set.
+        schema:
+          type: integer
+      - in: query
+        name: prompt_name
+        schema:
+          type: string
+      - in: query
+        name: prompt_name__icontains
+        schema:
+          type: string
+      - in: query
+        name: return_type
+        schema:
+          type: string
+          enum:
+          - json
+          - label
+          - text
+        description: |-
+          * `text` - text
+          * `label` - label
+          * `json` - json
+      tags:
+      - extracter-prompt
+      security:
+      - knoxTokenAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaginatedExtracterPromptList'
+          description: ''
+    post:
+      operationId: extracter_prompt_create
+      tags:
+      - extracter-prompt
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ExtracterPrompt'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/ExtracterPrompt'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/ExtracterPrompt'
+        required: true
+      security:
+      - knoxTokenAuth: []
+      responses:
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ExtracterPrompt'
+          description: ''
+  /api/v1/extracter-prompt/{id}/:
+    get:
+      operationId: extracter_prompt_retrieve
+      description: Concrete view for retrieving, updating or deleting a model instance.
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        required: true
+      tags:
+      - extracter-prompt
+      security:
+      - knoxTokenAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ExtracterPrompt'
+          description: ''
+    put:
+      operationId: extracter_prompt_update
+      description: Concrete view for retrieving, updating or deleting a model instance.
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        required: true
+      tags:
+      - extracter-prompt
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ExtracterPrompt'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/ExtracterPrompt'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/ExtracterPrompt'
+        required: true
+      security:
+      - knoxTokenAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ExtracterPrompt'
+          description: ''
+    patch:
+      operationId: extracter_prompt_partial_update
+      description: Concrete view for retrieving, updating or deleting a model instance.
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        required: true
+      tags:
+      - extracter-prompt
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PatchedExtracterPrompt'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/PatchedExtracterPrompt'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/PatchedExtracterPrompt'
+      security:
+      - knoxTokenAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ExtracterPrompt'
+          description: ''
+    delete:
+      operationId: extracter_prompt_destroy
+      description: Concrete view for retrieving, updating or deleting a model instance.
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        required: true
+      tags:
+      - extracter-prompt
+      security:
+      - knoxTokenAuth: []
+      responses:
+        '204':
+          description: No response body
+  /api/v1/injested-text-content/:
+    get:
+      operationId: injested_text_content_list
+      parameters:
+      - in: query
+        name: content_pool__pool_name
+        schema:
+          type: string
+      - in: query
+        name: content_pool__pool_name__icontains
+        schema:
+          type: string
+      - in: query
+        name: content_uuid
+        schema:
+          type: string
+          format: uuid
+      - in: query
+        name: datasource__datasource_name
+        schema:
+          type: string
+      - in: query
+        name: datasource__datasource_name__icontains
+        schema:
+          type: string
+      - name: page
+        required: false
+        in: query
+        description: A page number within the paginated result set.
+        schema:
+          type: integer
+      - in: query
+        name: process_completed_successfully
+        schema:
+          type: boolean
+      - in: query
+        name: processed_at
+        schema:
+          type: string
+          format: date-time
+      - in: query
+        name: processed_at__gte
+        schema:
+          type: string
+          format: date-time
+      - in: query
+        name: processed_at__lte
+        schema:
+          type: string
+          format: date-time
+      tags:
+      - injested-text-content
+      security:
+      - knoxTokenAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaginatedInjestedTextContentList'
+          description: ''
+    post:
+      operationId: injested_text_content_create
+      tags:
+      - injested-text-content
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/InjestedTextContent'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/InjestedTextContent'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/InjestedTextContent'
+        required: true
+      security:
+      - knoxTokenAuth: []
+      responses:
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/InjestedTextContent'
+          description: ''
+  /api/v1/injested-text-content/{id}/:
+    get:
+      operationId: injested_text_content_retrieve
+      description: Concrete view for retrieving, updating or deleting a model instance.
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        required: true
+      tags:
+      - injested-text-content
+      security:
+      - knoxTokenAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/InjestedTextContent'
+          description: ''
+    put:
+      operationId: injested_text_content_update
+      description: Concrete view for retrieving, updating or deleting a model instance.
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        required: true
+      tags:
+      - injested-text-content
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/InjestedTextContent'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/InjestedTextContent'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/InjestedTextContent'
+        required: true
+      security:
+      - knoxTokenAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/InjestedTextContent'
+          description: ''
+    patch:
+      operationId: injested_text_content_partial_update
+      description: Concrete view for retrieving, updating or deleting a model instance.
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        required: true
+      tags:
+      - injested-text-content
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PatchedInjestedTextContent'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/PatchedInjestedTextContent'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/PatchedInjestedTextContent'
+      security:
+      - knoxTokenAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/InjestedTextContent'
+          description: ''
+    delete:
+      operationId: injested_text_content_destroy
+      description: Concrete view for retrieving, updating or deleting a model instance.
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        required: true
+      tags:
+      - injested-text-content
+      security:
+      - knoxTokenAuth: []
+      responses:
+        '204':
+          description: No response body
+  /api/v1/login/:
+    post:
+      operationId: login_create
+      tags:
+      - login
+      security:
+      - knoxTokenAuth: []
+      - {}
+      responses:
+        '200':
+          description: No response body
+  /api/v1/logout/:
+    post:
+      operationId: logout_create
+      tags:
+      - logout
+      security:
+      - knoxTokenAuth: []
+      responses:
+        '200':
+          description: No response body
+  /api/v1/logoutall/:
+    post:
+      operationId: logoutall_create
+      description: |-
+        Log the user out of all sessions
+        I.E. deletes all auth tokens for the user
+      tags:
+      - logoutall
+      security:
+      - knoxTokenAuth: []
+      responses:
+        '200':
+          description: No response body
+  /api/v1/processed-data/:
+    get:
+      operationId: processed_data_list
+      parameters:
+      - in: query
+        name: chain__chain_name
+        schema:
+          type: string
+      - in: query
+        name: chain__chain_name__icontains
+        schema:
+          type: string
+      - in: query
+        name: content_pool__pool_name
+        schema:
+          type: string
+      - in: query
+        name: content_pool__pool_name__icontains
+        schema:
+          type: string
+      - in: query
+        name: injested_text_content__content_uuid
+        schema:
+          type: string
+          format: uuid
+      - name: page
+        required: false
+        in: query
+        description: A page number within the paginated result set.
+        schema:
+          type: integer
+      - in: query
+        name: prompt__prompt_name
+        schema:
+          type: string
+      - in: query
+        name: prompt__prompt_name__icontains
+        schema:
+          type: string
+      tags:
+      - processed-data
+      security:
+      - knoxTokenAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaginatedProcessedDataList'
+          description: ''
+    post:
+      operationId: processed_data_create
+      tags:
+      - processed-data
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ProcessedData'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/ProcessedData'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/ProcessedData'
+        required: true
+      security:
+      - knoxTokenAuth: []
+      responses:
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProcessedData'
+          description: ''
+components:
+  schemas:
+    ContentPool:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        created_at:
+          type: string
+          format: date-time
+          readOnly: true
+          nullable: true
+        updated_at:
+          type: string
+          format: date-time
+          readOnly: true
+          nullable: true
+        pool_name:
+          type: string
+          maxLength: 255
+      required:
+      - created_at
+      - id
+      - pool_name
+      - updated_at
+    DatasourceSerialzer:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        datasource_name:
+          type: string
+          maxLength: 255
+        datasource_type_name:
+          $ref: '#/components/schemas/DatasourceTypeNameEnum'
+        created_at:
+          type: string
+          format: date-time
+          readOnly: true
+          nullable: true
+        updated_at:
+          type: string
+          format: date-time
+          readOnly: true
+          nullable: true
+      required:
+      - created_at
+      - datasource_name
+      - datasource_type_name
+      - id
+      - updated_at
+    DatasourceTypeNameEnum:
+      enum:
+      - standard
+      type: string
+      description: '* `standard` - standard'
+    ExtracterChain:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        created_at:
+          type: string
+          format: date-time
+          readOnly: true
+          nullable: true
+        updated_at:
+          type: string
+          format: date-time
+          readOnly: true
+          nullable: true
+        chain_name:
+          type: string
+          maxLength: 100
+        content_pool:
+          type: integer
+        llm_name:
+          $ref: '#/components/schemas/LlmNameEnum'
+      required:
+      - chain_name
+      - content_pool
+      - created_at
+      - id
+      - updated_at
+    ExtracterPrompt:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        created_at:
+          type: string
+          format: date-time
+          readOnly: true
+          nullable: true
+        updated_at:
+          type: string
+          format: date-time
+          readOnly: true
+          nullable: true
+        prompt_name:
+          type: string
+          maxLength: 100
+        prompt_text:
+          type: string
+        return_type:
+          $ref: '#/components/schemas/ReturnTypeEnum'
+        jsonschema:
+          type: string
+          nullable: true
+          description: Only used when return type is json
+        labels_config_json:
+          type: object
+          additionalProperties: {}
+          nullable: true
+          description: Only used when return type is label
+        extracter_chain:
+          type: integer
+        run_if_expr:
+          type: string
+          nullable: true
+          description: Blank means always run
+        order_index:
+          type: integer
+          maximum: 2147483647
+          minimum: -2147483648
+          default: 0
+      required:
+      - created_at
+      - extracter_chain
+      - id
+      - prompt_name
+      - prompt_text
+      - return_type
+      - updated_at
+    InjestedTextContent:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        created_at:
+          type: string
+          format: date-time
+          readOnly: true
+          nullable: true
+        updated_at:
+          type: string
+          format: date-time
+          readOnly: true
+          nullable: true
+        content_uuid:
+          type: string
+          format: uuid
+        content_pool:
+          type: integer
+        text_content:
+          type: string
+        metadata_json:
+          type: object
+          additionalProperties: {}
+          nullable: true
+        datasource:
+          type: integer
+        processed_at:
+          type: string
+          format: date-time
+          nullable: true
+        process_completed_successfully:
+          type: boolean
+          nullable: true
+      required:
+      - content_pool
+      - created_at
+      - datasource
+      - id
+      - text_content
+      - updated_at
+    LlmNameEnum:
+      enum:
+      - gpt-3.5-turbo
+      - gpt-3.5-turbo-16k
+      - gpt-4
+      type: string
+      description: |-
+        * `gpt-3.5-turbo` - gpt-3.5-turbo
+        * `gpt-3.5-turbo-16k` - gpt-3.5-turbo-16k
+        * `gpt-4` - gpt-4
+    PaginatedContentPoolList:
+      type: object
+      properties:
+        count:
+          type: integer
+          example: 123
+        next:
+          type: string
+          nullable: true
+          format: uri
+          example: http://api.example.org/accounts/?page=4
+        previous:
+          type: string
+          nullable: true
+          format: uri
+          example: http://api.example.org/accounts/?page=2
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/ContentPool'
+    PaginatedDatasourceSerialzerList:
+      type: object
+      properties:
+        count:
+          type: integer
+          example: 123
+        next:
+          type: string
+          nullable: true
+          format: uri
+          example: http://api.example.org/accounts/?page=4
+        previous:
+          type: string
+          nullable: true
+          format: uri
+          example: http://api.example.org/accounts/?page=2
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/DatasourceSerialzer'
+    PaginatedExtracterChainList:
+      type: object
+      properties:
+        count:
+          type: integer
+          example: 123
+        next:
+          type: string
+          nullable: true
+          format: uri
+          example: http://api.example.org/accounts/?page=4
+        previous:
+          type: string
+          nullable: true
+          format: uri
+          example: http://api.example.org/accounts/?page=2
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/ExtracterChain'
+    PaginatedExtracterPromptList:
+      type: object
+      properties:
+        count:
+          type: integer
+          example: 123
+        next:
+          type: string
+          nullable: true
+          format: uri
+          example: http://api.example.org/accounts/?page=4
+        previous:
+          type: string
+          nullable: true
+          format: uri
+          example: http://api.example.org/accounts/?page=2
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/ExtracterPrompt'
+    PaginatedInjestedTextContentList:
+      type: object
+      properties:
+        count:
+          type: integer
+          example: 123
+        next:
+          type: string
+          nullable: true
+          format: uri
+          example: http://api.example.org/accounts/?page=4
+        previous:
+          type: string
+          nullable: true
+          format: uri
+          example: http://api.example.org/accounts/?page=2
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/InjestedTextContent'
+    PaginatedProcessedDataList:
+      type: object
+      properties:
+        count:
+          type: integer
+          example: 123
+        next:
+          type: string
+          nullable: true
+          format: uri
+          example: http://api.example.org/accounts/?page=4
+        previous:
+          type: string
+          nullable: true
+          format: uri
+          example: http://api.example.org/accounts/?page=2
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/ProcessedData'
+    PatchedContentPool:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        created_at:
+          type: string
+          format: date-time
+          readOnly: true
+          nullable: true
+        updated_at:
+          type: string
+          format: date-time
+          readOnly: true
+          nullable: true
+        pool_name:
+          type: string
+          maxLength: 255
+    PatchedDatasourceSerialzer:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        datasource_name:
+          type: string
+          maxLength: 255
+        datasource_type_name:
+          $ref: '#/components/schemas/DatasourceTypeNameEnum'
+        created_at:
+          type: string
+          format: date-time
+          readOnly: true
+          nullable: true
+        updated_at:
+          type: string
+          format: date-time
+          readOnly: true
+          nullable: true
+    PatchedExtracterChain:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        created_at:
+          type: string
+          format: date-time
+          readOnly: true
+          nullable: true
+        updated_at:
+          type: string
+          format: date-time
+          readOnly: true
+          nullable: true
+        chain_name:
+          type: string
+          maxLength: 100
+        content_pool:
+          type: integer
+        llm_name:
+          $ref: '#/components/schemas/LlmNameEnum'
+    PatchedExtracterPrompt:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        created_at:
+          type: string
+          format: date-time
+          readOnly: true
+          nullable: true
+        updated_at:
+          type: string
+          format: date-time
+          readOnly: true
+          nullable: true
+        prompt_name:
+          type: string
+          maxLength: 100
+        prompt_text:
+          type: string
+        return_type:
+          $ref: '#/components/schemas/ReturnTypeEnum'
+        jsonschema:
+          type: string
+          nullable: true
+          description: Only used when return type is json
+        labels_config_json:
+          type: object
+          additionalProperties: {}
+          nullable: true
+          description: Only used when return type is label
+        extracter_chain:
+          type: integer
+        run_if_expr:
+          type: string
+          nullable: true
+          description: Blank means always run
+        order_index:
+          type: integer
+          maximum: 2147483647
+          minimum: -2147483648
+          default: 0
+    PatchedInjestedTextContent:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        created_at:
+          type: string
+          format: date-time
+          readOnly: true
+          nullable: true
+        updated_at:
+          type: string
+          format: date-time
+          readOnly: true
+          nullable: true
+        content_uuid:
+          type: string
+          format: uuid
+        content_pool:
+          type: integer
+        text_content:
+          type: string
+        metadata_json:
+          type: object
+          additionalProperties: {}
+          nullable: true
+        datasource:
+          type: integer
+        processed_at:
+          type: string
+          format: date-time
+          nullable: true
+        process_completed_successfully:
+          type: boolean
+          nullable: true
+    ProcessedData:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        created_at:
+          type: string
+          format: date-time
+          readOnly: true
+          nullable: true
+        updated_at:
+          type: string
+          format: date-time
+          readOnly: true
+          nullable: true
+        content_pool:
+          type: integer
+        injested_text_content:
+          type: integer
+        chain:
+          type: integer
+        prompt:
+          type: integer
+        prompt_result:
+          type: string
+      required:
+      - chain
+      - content_pool
+      - created_at
+      - id
+      - injested_text_content
+      - prompt
+      - prompt_result
+      - updated_at
+    ReturnTypeEnum:
+      enum:
+      - text
+      - label
+      - json
+      type: string
+      description: |-
+        * `text` - text
+        * `label` - label
+        * `json` - json
+  securitySchemes:
+    knoxTokenAuth:
+      type: apiKey
+      in: header
+      name: Authorization
+      description: Token-based authentication with required prefix "Token"

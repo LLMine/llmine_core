@@ -8,7 +8,7 @@ import jinja2
 
 
 def should_run_prompt(run_if_expr, prompt_response_map):
-    if run_if_expr is None:
+    if run_if_expr is None or run_if_expr.strip() == "":
         return True
 
     environment = jinja2.Environment()
@@ -41,7 +41,7 @@ def run_extracter_chain(
     prompt_response_map = {}
 
     for extracter_prompt in extracter_prompts:
-        if not should_run_prompt(extracter_prompt.run_if_expr):
+        if not should_run_prompt(extracter_prompt.run_if_expr, prompt_response_map):
             prompt_response_map[
                 extracter_prompt.prompt_name
             ] = "x_llmine_skipped_execution"
