@@ -93,3 +93,15 @@ class ProcessedDataSerializer(serializers.ModelSerializer):
             "prompt",
             "prompt_result",
         )
+
+
+class InjestedTextContentWebhookSerializer(serializers.ModelSerializer):
+    # content_pool = serializers.CharField(required=False)
+    # datasource = serializers.CharField(required=False)
+
+    class Meta:
+        model = InjestedTextContent
+        fields = (
+            "text_content",
+            "metadata_json",
+        )

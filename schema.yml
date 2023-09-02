@@ -675,9 +675,9 @@ paths:
       responses:
         '204':
           description: No response body
-  /api/v1/injested-text-content/:
+  /api/v1/ingested-text-content/:
     get:
-      operationId: injested_text_content_list
+      operationId: ingested_text_content_list
       parameters:
       - in: query
         name: content_pool__pool_name
@@ -726,7 +726,7 @@ paths:
           type: string
           format: date-time
       tags:
-      - injested-text-content
+      - ingested-text-content
       security:
       - knoxTokenAuth: []
       responses:
@@ -737,9 +737,9 @@ paths:
                 $ref: '#/components/schemas/PaginatedInjestedTextContentList'
           description: ''
     post:
-      operationId: injested_text_content_create
+      operationId: ingested_text_content_create
       tags:
-      - injested-text-content
+      - ingested-text-content
       requestBody:
         content:
           application/json:
@@ -761,9 +761,9 @@ paths:
               schema:
                 $ref: '#/components/schemas/InjestedTextContent'
           description: ''
-  /api/v1/injested-text-content/{id}/:
+  /api/v1/ingested-text-content/{id}/:
     get:
-      operationId: injested_text_content_retrieve
+      operationId: ingested_text_content_retrieve
       description: Concrete view for retrieving, updating or deleting a model instance.
       parameters:
       - in: path
@@ -772,7 +772,7 @@ paths:
           type: integer
         required: true
       tags:
-      - injested-text-content
+      - ingested-text-content
       security:
       - knoxTokenAuth: []
       responses:
@@ -783,7 +783,7 @@ paths:
                 $ref: '#/components/schemas/InjestedTextContent'
           description: ''
     put:
-      operationId: injested_text_content_update
+      operationId: ingested_text_content_update
       description: Concrete view for retrieving, updating or deleting a model instance.
       parameters:
       - in: path
@@ -792,7 +792,7 @@ paths:
           type: integer
         required: true
       tags:
-      - injested-text-content
+      - ingested-text-content
       requestBody:
         content:
           application/json:
@@ -815,7 +815,7 @@ paths:
                 $ref: '#/components/schemas/InjestedTextContent'
           description: ''
     patch:
-      operationId: injested_text_content_partial_update
+      operationId: ingested_text_content_partial_update
       description: Concrete view for retrieving, updating or deleting a model instance.
       parameters:
       - in: path
@@ -824,7 +824,7 @@ paths:
           type: integer
         required: true
       tags:
-      - injested-text-content
+      - ingested-text-content
       requestBody:
         content:
           application/json:
@@ -846,7 +846,7 @@ paths:
                 $ref: '#/components/schemas/InjestedTextContent'
           description: ''
     delete:
-      operationId: injested_text_content_destroy
+      operationId: ingested_text_content_destroy
       description: Concrete view for retrieving, updating or deleting a model instance.
       parameters:
       - in: path
@@ -855,7 +855,7 @@ paths:
           type: integer
         required: true
       tags:
-      - injested-text-content
+      - ingested-text-content
       security:
       - knoxTokenAuth: []
       responses:
@@ -969,6 +969,43 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ProcessedData'
+          description: ''
+  /api/v1/push-content/{pool_name}/{datasource_name}/:
+    post:
+      operationId: push_content_create
+      parameters:
+      - in: path
+        name: datasource_name
+        schema:
+          type: string
+        required: true
+      - in: path
+        name: pool_name
+        schema:
+          type: string
+        required: true
+      tags:
+      - push-content
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/InjestedTextContentWebhook'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/InjestedTextContentWebhook'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/InjestedTextContentWebhook'
+        required: true
+      security:
+      - knoxTokenAuth: []
+      responses:
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/InjestedTextContentWebhook'
           description: ''
 components:
   schemas:
@@ -1151,6 +1188,17 @@ components:
       - id
       - text_content
       - updated_at
+    InjestedTextContentWebhook:
+      type: object
+      properties:
+        text_content:
+          type: string
+        metadata_json:
+          type: object
+          additionalProperties: {}
+          nullable: true
+      required:
+      - text_content
     LlmNameEnum:
       enum:
       - gpt-3.5-turbo
