@@ -98,6 +98,12 @@ You will need to run the celery too in a different terminal to actually run the 
 (env)$ celery -A llmine_core worker -l info --concurrency=2
 ```
 
+To Regenerate the OpenAPI Spec file run
+```
+(env)$ source export_env_vars.sh
+(env)$ python manage.py spectacular --color --file schema.yml
+```
+
 ## Contribution Guide
 
 Work in Progress
