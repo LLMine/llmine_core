@@ -5,7 +5,7 @@ from rest_framework import generics, mixins
 from rest_framework.permissions import IsAuthenticated, AllowAny
 from rest_framework_api_key.permissions import HasAPIKey
 
-from .serializers import DatasourceSerialzer
+from .serializers import DatasourceSerialzer, InjestedTextContentWebhookSerializer
 
 from django.contrib.auth import login
 from rest_framework.authtoken.serializers import AuthTokenSerializer
@@ -152,3 +152,22 @@ class LoginView(KnoxLoginView):
         user = serializer.validated_data["user"]
         login(request, user)
         return super(LoginView, self).post(request, format=None)
+
+
+# Webhooks
+
+
+class InjestedTextContentWebhookView(generics.CreateAPIView):
+    queryset = InjestedTextContent.objects.all()
+    serializer_class = InjestedTextContentWebhookSerializer
+    permission_classes = [HasAPIKey | IsAuthenticated]
+
+    def perform_create(self, serializer):
+        datasource = Datasource.objects.get(
+            datasource_name=self.kwargs["datasource_name"]
+        )
+        content_pool = ContentPool.objects.get(pool_name=self.kwargs["pool_name"])
+        serializer.save(
+            datasource=datasource,
+            content_pool=content_pool,
+        )
