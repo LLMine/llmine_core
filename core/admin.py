@@ -53,7 +53,7 @@ class InjestedTextContentAdmin(CustomModelAdmin):
 
     def __init__(self, model: type, admin_site: AdminSite | None) -> None:
         super().__init__(model, admin_site)
-        self.actions += [self.export_data]
+        self.actions += ["export_data"]
 
     def export_data(self, request, queryset: QuerySet[InjestedTextContent]):
         pools = queryset.distinct("content_pool_id").order_by("content_pool_id")
