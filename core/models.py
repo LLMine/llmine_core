@@ -78,3 +78,12 @@ class ProcessedData(BaseLLMineModel):
 
     def __str__(self) -> str:
         return f"{self.content_pool.pool_name} - {self.injested_text_content_id}"
+
+
+class DataExport(BaseLLMineModel):
+    export_uuid = models.UUIDField(default=uuid.uuid4, unique=True)
+    export_type = models.CharField(max_length=255)
+    data_file = models.FileField()
+
+    def __str__(self) -> str:
+        return self.export_uuid

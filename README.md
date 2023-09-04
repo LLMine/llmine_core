@@ -1,4 +1,5 @@
 # llmine_core
+![Logo](/assets/logo_small_std.png?raw=true)
 
 LLMine is an Open Source tool that helps you mine insights from unstructured text content using configured LLM prompts without writing code. This project contains the source code for LLMine's core service written in Django.
 
@@ -15,6 +16,8 @@ Here's some of the things you can build with LLMine
 2. **Resume Parsing Chains** - You can easily setup an LLMine prompt chains to run whenever a Job Applicant submits a resume. You can find and annotate if the candidate passes some criteria, generate a write-up / summary about the Candidate's fit with the role and so on, without any coding required. Please note, uses of some LLMs in employment related use-cases are not permitted. Please refer to Usage Policies of the underlying LLM you are using. It is upto you to make sure that you comply with all regulatory requirements for your use-case.
 
 And many more...We would love to see the community come up use-cases beyond our original imagination.
+
+![Screenshot 1](/assets/screenshots/screenshot1.png?raw=true) ![Screenshot 2](/assets/screenshots/screenshot2.png?raw=true)
 
 ## Supported Large Language Models
 
@@ -44,7 +47,7 @@ Our application is best suited to run with Instruction-Tuned LLMs like GPT-3.5 o
 * [X] Conditionally run prompts based on the output of previous prompts in a chain
 * [X] Webhooks and REST API Layer
 * [ ] Add responses from previous step in chain as input var in next step's prompt via template string
-* [ ] Support for custom Python code as step in chain
+* [ ] Support for Lambda/Cloud Function as step in chain
 * [ ] User-Friendly UI to configure workflows
 * [ ] Basic Dashboard to view and export extracted insights
 * [ ] LLama2 Support
@@ -80,6 +83,7 @@ SECRET_KEY=<DJANGO SECRET KEY, PLEASE GENERATE YOUR OWN>
 DEBUG=True
 OPENAI_API_KEY=<OPEN AI KEY>
 REDIS_URL=<YOUR REDIS URL>
+MEDIA_ROOT=<YOUR MEDIA ROOT>
 ```
 
 Now you need to export these vars on your command line, run migrations, create a superuser and login via admin panel.
@@ -87,6 +91,7 @@ Now you need to export these vars on your command line, run migrations, create a
 ```
 (env)$ source export_env_vars.sh
 (env)$ python manage.py migrate
+(env)$ python manage.py collectstatic
 (env)$ python manage.py createsuperuser
 (env)$ python manage.py runserver
 ```

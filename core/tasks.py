@@ -1,8 +1,25 @@
+import csv
+import io
+import tempfile
+import uuid
 from celery import shared_task
-from .models import ExtracterChain, InjestedTextContent, ExtracterPrompt, ProcessedData
+
+from core.utils.export import get_data_dump
+from .models import (
+    ExtracterChain,
+    InjestedTextContent,
+    ExtracterPrompt,
+    ProcessedData,
+    ContentPool,
+    DataExport,
+)
 from .utils.llm_service import get_llm_service
 from django.utils import timezone
 from django.template import Context, Template
+from django.db.models.query import QuerySet
+
+from django.core.files.storage import default_storage
+from django.core.files.base import ContentFile
 
 import jinja2
 
@@ -99,3 +116,51 @@ def process_ingested_content(self, content_uuid):
     ingested_text_content.process_completed_successfully = success
 
     ingested_text_content.save()
+
+
+@shared_task(
+    bind=True,
+    autoretry_for=(Exception,),
+    retry_backoff=True,
+    retry_kwargs={"max_retries": 1},
+    task_time_limit=600,
+)
+def process_data_export(self, exported_ingestable_content_ids, content_pool_id):
+    """
+    Current implementation needs the entire data in memory. It also writes the CSV to an in-mem buffer.
+    This is not ideal and not scalable. It might lead to high memory usage for large datasets.
+
+    TODO: Refactor the logic to stream from DB, transform and immediately flush to file.
+    """
+    export_uuid = uuid.uuid4()
+
+    queryset: QuerySet[InjestedTextContent] = InjestedTextContent.objects.filter(
+        id__in=exported_ingestable_content_ids
+    )
+    content_pool = ContentPool.objects.get(id=content_pool_id)
+
+    data, headers = get_data_dump(queryset, content_pool)
+    if not len(data) > 0:
+        return
+
+    print(data)
+    print(headers)
+
+    buffer = io.StringIO()
+
+    writer = csv.DictWriter(buffer, fieldnames=headers)
+    writer.writeheader()
+    writer.writerows(data)
+
+    buffer.seek(0)
+    saved_path = default_storage.save(
+        f"exported_data/{export_uuid}.csv", ContentFile(buffer.read())
+    )
+
+    buffer.close()
+
+    DataExport.objects.create(
+        export_uuid=export_uuid,
+        export_type="Processed Content",
+        data_file=saved_path,
+    )
