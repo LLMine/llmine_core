@@ -15,9 +15,13 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path, include
+from django.contrib import admin
 
 urlpatterns = [
     path("admin/", admin.site.urls),
     path("api/v1/", include("api.urls")),
     path("", include("ui.urls")),
 ]
+
+admin.site.site_header = "LLMine Core Superadmin"
+admin.site.site_title = "LLMine Core"
