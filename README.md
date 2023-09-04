@@ -29,6 +29,11 @@ Our application is best suited to run with Instruction-Tuned LLMs like GPT-3.5 o
 
 ## How does it work?
 
+Watch the quick 3 minute demo on YouTube by clicking the thumbnail below.
+
+[![Watch the video](https://img.youtube.com/vi/EYrUa7ituuE/hqdefault.jpg)](https://www.youtube.com/embed/<VIDEO_ID>)
+
+
 1. **Create a Content Pool** - First step is to define a Content Pool. Let's say we create one called *Amazon Reviews*
 2. **Setup Extracter Chains for a Content Pool** - Now we can define one or more extracter chains for our content pool. We can define what underlying LLM we want to use for a particular chain. Let's say we define a chain called *Issue Extracter* for our *Amazon Reviews* pool.
 3. **Create Extracter Prompts under the chains** - Now that you have defined a chain, you can actually create prompts that define the tasks to perform on the Ingested Text Content you receive in the Content Pool. For example, we create three prompts like follows
