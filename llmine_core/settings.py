@@ -235,3 +235,7 @@ JAZZMIN_SETTINGS = {
         {"app": "core"},
     ],
 }
+
+
+MEDIA_ROOT = get_secret("MEDIA_ROOT")
+MEDIA_URL = "/media/"

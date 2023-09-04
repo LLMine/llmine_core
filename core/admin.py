@@ -1,6 +1,10 @@
-from django.contrib import admin
+from typing import Optional, Type
+from django.contrib import admin, messages
+from django.contrib.admin.sites import AdminSite
 from core.models import *
 from datasources.models import *
+from django.db.models.query import QuerySet
+from core.tasks import process_data_export
 
 
 class CustomModelAdmin(admin.ModelAdmin):
@@ -46,6 +50,24 @@ class InjestedTextContentAdmin(CustomModelAdmin):
     )
     list_filter = list_display
     exclude = ("is_deleted",)
+
+    def __init__(self, model: type, admin_site: AdminSite | None) -> None:
+        super().__init__(model, admin_site)
+        self.actions += [self.export_data]
+
+    def export_data(self, request, queryset: QuerySet[InjestedTextContent]):
+        pools = queryset.distinct("content_pool_id").order_by("content_pool_id")
+        print(pools)
+        if len(pools) < 1:
+            raise Exception("This shouldn't have happened")
+
+        if len(pools) > 1:
+            messages.error(
+                request, "Please select data from a single content pool only"
+            )
+        else:
+            ids = list(queryset.values_list("id", flat=True))
+            process_data_export.delay(ids, pools[0].content_pool_id)
 
 
 # ExtracterChainAdmin
@@ -128,3 +150,14 @@ class DatasourceAdmin(CustomModelAdmin):
     )
     exclude = ("is_deleted",)
     list_filter = list_display
+
+
+@admin.register(DataExport)
+class DataExportAdmin(CustomModelAdmin):
+    list_display = (
+        "export_uuid",
+        "export_type",
+        "data_file",
+        "created_at",
+        "updated_at",
+    )

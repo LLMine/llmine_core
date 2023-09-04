@@ -1,3 +1,5 @@
+import csv
+import tempfile
 from typing import Dict, List
 from core.models import InjestedTextContent, ContentPool, ProcessedData
 from django.db.models.query import QuerySet
@@ -14,6 +16,16 @@ def get_data_dump(
     ).prefetch_related("prompt", "injested_text_content")
 
     processed_content_dict = {}
+    headers = set(
+        [
+            "content_uuid",
+            "content_pool_name",
+            "text_content",
+            "metadata_json",
+            "datasource_name",
+            "processed_at",
+        ]
+    )
 
     for data in processed_data:
         if data.injested_text_content_id in processed_content_dict:
@@ -34,4 +46,7 @@ def get_data_dump(
                 data.prompt.prompt_name
             ] = data.prompt_result
 
-    return list(processed_content_dict.values)
+        headers.add(data.prompt.prompt_name)
+
+    # return {"rows": processed_content_dict.values(), "headers": headers}
+    return (processed_content_dict.values(), headers)

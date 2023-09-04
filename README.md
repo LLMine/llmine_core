@@ -83,6 +83,7 @@ SECRET_KEY=<DJANGO SECRET KEY, PLEASE GENERATE YOUR OWN>
 DEBUG=True
 OPENAI_API_KEY=<OPEN AI KEY>
 REDIS_URL=<YOUR REDIS URL>
+MEDIA_ROOT=<YOUR MEDIA ROOT>
 ```
 
 Now you need to export these vars on your command line, run migrations, create a superuser and login via admin panel.
