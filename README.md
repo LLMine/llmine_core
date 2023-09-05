@@ -31,7 +31,7 @@ Our application is best suited to run with Instruction-Tuned LLMs like GPT-3.5 o
 
 Watch the quick 3 minute demo on YouTube by clicking the thumbnail below.
 
-[![Watch the video](https://img.youtube.com/vi/EYrUa7ituuE/hqdefault.jpg)](https://www.youtube.com/embed/<VIDEO_ID>)
+[![Watch the video](https://img.youtube.com/vi/EYrUa7ituuE/hqdefault.jpg)](https://www.youtube.com/embed/EYrUa7ituuE)
 
 
 1. **Create a Content Pool** - First step is to define a Content Pool. Let's say we create one called *Amazon Reviews*
