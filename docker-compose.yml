@@ -1,0 +1,34 @@
+version: '3'
+
+services:
+  redis:
+    image: redis:latest
+    container_name: redis
+    ports:
+      - "6379:6379"
+
+  celery:
+    build: 
+      context: .
+      dockerfile: Dockerfile_celery
+    container_name: celery
+    depends_on:
+      - redis
+    environment:
+      - CELERY_BROKER_URL=redis://redis:6379/0
+    env_file:
+      - .env
+
+  django_app:
+    build: .
+    container_name: django_app
+    ports:
+      - "8000:8000"
+    environment:
+      - PYTHONPATH=/app/
+    volumes:
+      - .:/app
+    depends_on:
+      - celery
+    env_file:
+      - .env

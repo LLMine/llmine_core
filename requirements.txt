@@ -38,6 +38,7 @@ django-ckeditor==6.5.1
 django-crispy-forms==1.10.0
 django-editorjs-fields==0.2.7
 django-filter==2.4.0
+django_jazzmin==2.6.0
 django-js-asset==2.0.0
 django-jsonform==2.15.0
 django-multitenant==3.2.1
