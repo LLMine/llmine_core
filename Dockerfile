@@ -1,21 +1,26 @@
-# Use an official Python runtime as a parent image
-FROM python:3.10.8
+FROM python:3.10
 
-# Set environment variables
+# set environment variables
+ENV PYTHONDONTWRITEBYTECODE 1
 ENV PYTHONUNBUFFERED 1
 ENV DJANGO_SETTINGS_MODULE llmine_core.settings
 
-# Create and set the working directory in the container
-WORKDIR /app
+# create user for the Django project
+RUN useradd -ms /bin/bash llmine_core
 
-# Copy the requirements file into the container
-COPY requirements.txt /app/
+# set current user
+USER llmine_core
 
-# Install any needed packages specified in requirements.txt
-RUN pip install --no-cache-dir -r requirements.txt
+# set work directory
+WORKDIR /home/llmine_core
 
-# Copy the rest of the application code into the container
-COPY . /app/
+# copy and install pip requirements
+COPY --chown=llmine_core ./requirements.txt /home/llmine_core/requirements.txt
+ENV PATH /home/llmine_core/.local/bin:$PATH
+RUN pip install --user -r /home/llmine_core/requirements.txt
 
-# Run your application
-CMD ["python", "manage.py", "runserver", "0.0.0.0:8000"]
+# copy Django project files
+COPY --chown=llmine_core . /home/llmine_core/
+
+RUN ["chmod", "+x", "/home/llmine_core/docker-entrypoint-gunicorn.sh"]
+RUN ["chmod", "+x", "/home/llmine_core/docker-entrypoint-celery.sh"]
