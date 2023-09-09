@@ -1,0 +1,51 @@
+version: '3'
+
+services:
+  redis:
+    image: redis:latest
+    container_name: redis
+    ports:
+      - "6379:6379"
+
+  celery:
+    build: .
+    container_name: celery
+    entrypoint: /home/llmine_core/docker-entrypoint-celery.sh
+    depends_on:
+      - redis
+    environment:
+      CELERY_BROKER_URL: redis://redis:6379/0
+    env_file:
+      - .sample.env
+
+  db:
+    image: postgres:latest
+    ports:
+      - "5432:5432"
+    environment:
+      POSTGRES_DB: ${DB_NAME}
+      POSTGRES_USER: ${DB_USER}
+      POSTGRES_PASSWORD: ${DB_PASSWORD}
+    env_file:
+      - .sample.env
+  
+  llmine_core:
+    build: .
+    container_name: llmine_core
+    entrypoint: /home/llmine_core/docker-entrypoint-gunicorn.sh
+    ports:
+      - "8000:8000"
+    depends_on:
+      - celery
+      - db
+    env_file:
+      - .sample.env
+
+  nginx:
+    image: nginx:latest
+    ports:
+      - "80:80"
+    volumes:
+      - ./nginx.conf:/etc/nginx/nginx.conf:ro
+    depends_on:
+      - llmine_core
