@@ -10,7 +10,7 @@ services:
     build: .
     entrypoint: /home/llmine_core/docker-entrypoint-celery.sh
     depends_on:
-      - redis
+      - llmine_core_redis
     environment:
       CELERY_BROKER_URL: redis://redis:6379/0
     env_file:
@@ -33,8 +33,8 @@ services:
 #    ports:
 #      - "8000:8000"
     depends_on:
-      - celery
-      - db
+      - llmine_core_celery
+      - llmine_core_db
     env_file:
       - .sample.env
 
