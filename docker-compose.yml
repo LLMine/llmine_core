@@ -3,38 +3,37 @@ version: '3'
 services:
   llmine_core_redis:
     image: redis:latest
-#   ports:
-#     - "6379:6379"
+
+  llmine_core_db:
+    build:
+      context: .
+      dockerfile: ./Dockerfile.db
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    env_file:
+      - .sample.env
 
   llmine_core_celery:
     build: .
     entrypoint: /home/llmine_core/docker-entrypoint-celery.sh
     depends_on:
       - llmine_core_redis
-    environment:
-      CELERY_BROKER_URL: redis://llmine_core_redis:6379/0
-    env_file:
-      - .sample.env
-
-  llmine_core_db:
-    image: postgres:latest
-#   ports:
-#     - "5432:5432"
-    environment:
-      POSTGRES_DB: ${DB_NAME}
-      POSTGRES_USER: ${DB_USER}
-      POSTGRES_PASSWORD: ${DB_PASSWORD}
+      - llmine_core_db
+    volumes:
+      - static:/home/llmine_core/static/
+      - media:/home/llmine_core/media/
     env_file:
       - .sample.env
   
   llmine_core:
     build: .
     entrypoint: /home/llmine_core/docker-entrypoint-gunicorn.sh
-#    ports:
-#      - "8000:8000"
     depends_on:
       - llmine_core_celery
       - llmine_core_db
+    volumes:
+      - static:/home/llmine_core/static/
+      - media:/home/llmine_core/media/
     env_file:
       - .sample.env
 
@@ -44,5 +43,12 @@ services:
       - "80:80"
     volumes:
       - ./nginx.conf:/etc/nginx/nginx.conf:ro
+      - static:/var/www-data/static/
     depends_on:
       - llmine_core
+
+
+volumes:
+  pgdata:
+  static:
+  media:
