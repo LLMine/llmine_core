@@ -43,6 +43,10 @@ class ExtracterChain(BaseLLMineModel):
     def __str__(self) -> str:
         return self.chain_name
 
+    class Meta:
+        verbose_name = "Extractor Chain"
+        verbose_name_plural = "Extractor Chains"
+
 
 class ExtracterPrompt(BaseLLMineModel):
     prompt_name = models.CharField(max_length=100, unique=True)
@@ -69,6 +73,10 @@ class ExtracterPrompt(BaseLLMineModel):
 
     class Meta:
         unique_together = ("extracter_chain", "order_index")
+
+    class Meta:
+        verbose_name = "Extractor Prompt"
+        verbose_name_plural = "Extractor Prompts"
 
 
 class ProcessedData(BaseLLMineModel):
