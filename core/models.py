@@ -26,6 +26,10 @@ class InjestedTextContent(BaseLLMineModel):
     def __str__(self) -> str:
         return self.text_content
 
+    class Meta:
+        verbose_name = "Ingested Text Content"
+        verbose_name_plural = "Ingested Text Data"
+
 
 class ExtracterChain(BaseLLMineModel):
     chain_name = models.CharField(max_length=100, unique=True)
